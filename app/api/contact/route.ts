@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
 type ContactPayload = {
   name?: string;
@@ -34,6 +35,23 @@ export async function POST(request: Request) {
     );
   }
 
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const { error: dbError } = await supabase
+    .from("contact_submissions")
+    .insert({ name, email, message });
+
+  if (dbError) {
+    console.error("[contact] failed to store submission", dbError);
+    return NextResponse.json(
+      { error: "Message could not be sent right now. Please email directly." },
+      { status: 502 }
+    );
+  }
+
   const resendKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_TO_EMAIL ?? "royalmandigitalconcept@gmail.com";
 
@@ -58,18 +76,10 @@ export async function POST(request: Request) {
         throw new Error(`Resend responded with ${res.status}`);
       }
     } catch (error) {
-      console.error("[contact] failed to send email", error);
-      return NextResponse.json(
-        { error: "Message could not be sent right now. Please email directly." },
-        { status: 502 }
-      );
+      // Submission is already safely stored in Supabase — email is a
+      // best-effort notification, so its failure shouldn't fail the request.
+      console.error("[contact] failed to send notification email", error);
     }
-  } else {
-    console.info("[contact] received message (no email provider configured)", {
-      name,
-      email,
-      message,
-    });
   }
 
   return NextResponse.json({ success: true });
