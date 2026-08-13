@@ -5,9 +5,9 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/ui/reveal";
 import { DynamicIcon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import type { royalInventra, fraudShield } from "@/lib/data";
+import type { inventra, fraudShield, forexAI } from "@/lib/data";
 
-type Product = typeof royalInventra | typeof fraudShield;
+type Product = typeof inventra | typeof fraudShield | typeof forexAI;
 
 type ProductSectionProps = {
   product: Product;
@@ -18,11 +18,13 @@ type ProductSectionProps = {
 const accentText: Record<Product["accent"], string> = {
   electric: "text-electric-bright",
   emerald: "text-emerald-bright",
+  amber: "text-amber-bright",
 };
 
 const accentBorder: Record<Product["accent"], string> = {
   electric: "hover:border-electric/40",
   emerald: "hover:border-emerald/40",
+  amber: "hover:border-amber/40",
 };
 
 export function ProductSection({ product, mockup, reverse }: ProductSectionProps) {

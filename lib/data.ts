@@ -4,7 +4,7 @@ export const site = {
   statement:
     "I build intelligent software that solves real-world business and security challenges.",
   email: "royalmandigitalconcept@gmail.com",
-  url: "https://judeominiewah.dev",
+  url: "https://www.jude-omini-ewah.com.ng",
   location: "Remote / Worldwide",
 };
 
@@ -57,17 +57,17 @@ export type ProductFeature = {
   description: string;
 };
 
-export const royalInventra = {
-  key: "royal-inventra",
-  name: "Royal Inventra",
-  tagline: "Modern SaaS Platform",
+export const inventra = {
+  key: "inventra",
+  name: "Inventra",
+  tagline: "Retail Operations Platform",
   description:
-    "A complete operations platform for growing businesses — inventory, point of sale, invoicing, and analytics unified in one calm, fast interface.",
+    "Inventory that runs itself. Real-time stock, supplier orders, and profit analytics for modern retail — in one calm, fast workspace.",
   accent: "electric" as const,
   metrics: [
-    { label: "Modules", value: "10+" },
-    { label: "Sync latency", value: "<200ms" },
-    { label: "Uptime target", value: "99.9%" },
+    { label: "Uptime", value: "99.98%" },
+    { label: "Stores", value: "12k+" },
+    { label: "Inventory tracked", value: "$2.4B" },
   ],
   features: [
     {
@@ -134,62 +134,124 @@ export const fraudShield = {
   tagline: "AI-Powered Trust & Risk Platform",
   description:
     "A real-time fraud intelligence layer that scores risk, verifies identity, and protects digital businesses at the speed of a transaction.",
-  accent: "emerald" as const,
+  accent: "amber" as const,
   metrics: [
-    { label: "Signals analyzed", value: "120+" },
-    { label: "Decision time", value: "<80ms" },
-    { label: "Detection lift", value: "3.4x" },
+    { label: "Transactions (24h)", value: "60" },
+    { label: "Marked safe", value: "27%" },
+    { label: "Auto-blocked", value: "12" },
+    { label: "Fraud prevented", value: "$14,739" },
   ],
   features: [
     {
-      icon: "Radar",
-      title: "Fraud Detection",
-      description: "Pattern-based detection tuned to catch novel attacks, not just known ones.",
+      icon: "Activity",
+      title: "Live Transaction Feed",
+      description: "Every transaction monitored in real time, scored and routed instantly.",
     },
     {
-      icon: "Activity",
-      title: "Behavior Analysis",
-      description: "Continuous behavioral signals separate real users from bad actors.",
+      icon: "FolderKanban",
+      title: "Case Management",
+      description: "Structured case tooling for analysts to investigate flagged activity.",
     },
     {
       icon: "Fingerprint",
-      title: "Identity Verification",
-      description: "Frictionless verification that stays invisible to legitimate users.",
+      title: "Identity Search",
+      description: "Look up and verify identities behind a transaction in seconds.",
     },
     {
-      icon: "Gauge",
-      title: "AI Risk Scoring",
-      description: "Every event scored in real time with a transparent, explainable model.",
+      icon: "MessageSquareWarning",
+      title: "Scam Message Analyzer",
+      description: "AI-driven analysis that flags scam and phishing message patterns.",
     },
     {
-      icon: "ShieldHalf",
-      title: "Digital Trust",
-      description: "A composable trust score businesses can act on immediately.",
+      icon: "Network",
+      title: "Trust Network",
+      description: "Maps relationships between accounts and devices to surface hidden risk.",
     },
     {
-      icon: "MonitorCheck",
-      title: "Real-time Monitoring",
-      description: "Live event streams with instant alerting on emerging risk.",
+      icon: "SlidersHorizontal",
+      title: "Rules Engine",
+      description: "Configurable risk rules that auto-block or flag activity in real time.",
     },
     {
-      icon: "BrainCircuit",
-      title: "Fraud Intelligence",
-      description: "Aggregated intelligence that gets sharper with every signal it sees.",
+      icon: "Ban",
+      title: "Blacklist / Whitelist",
+      description: "Fine-grained allow and deny lists for accounts, devices, and regions.",
     },
     {
-      icon: "Search",
-      title: "Investigation Dashboard",
-      description: "Deep case tooling for analysts to investigate and resolve fast.",
+      icon: "FileText",
+      title: "Reports",
+      description: "Exportable reporting across transactions, risk, and outcomes.",
     },
     {
-      icon: "Globe2",
-      title: "Global Protection",
-      description: "Coverage built for cross-border transactions and distributed risk.",
+      icon: "History",
+      title: "Audit Log",
+      description: "A complete, tamper-evident record of every action across the platform.",
+    },
+    {
+      icon: "ShieldAlert",
+      title: "Security Center",
+      description: "A single place to monitor platform-wide security posture and alerts.",
     },
   ] satisfies ProductFeature[],
 };
 
-export const products = [royalInventra, fraudShield];
+export const forexAI = {
+  key: "forex-ai",
+  name: "Forex-AI",
+  tagline: "AI Market Intelligence Platform",
+  description:
+    "An AI trading co-pilot that watches global markets around the clock, reasons across multiple timeframes, and only surfaces a signal when the setup genuinely lines up — on web and mobile.",
+  accent: "emerald" as const,
+  metrics: [
+    { label: "Markets monitored", value: "10" },
+    { label: "Timeframes analyzed", value: "3" },
+    { label: "Trade logic", value: "Confluence-based" },
+  ],
+  features: [
+    {
+      icon: "LineChart",
+      title: "Multi-Market Monitoring",
+      description: "Forex majors, metals, oil, and crypto watched continuously in one view.",
+    },
+    {
+      icon: "Layers",
+      title: "Multi-Timeframe Analysis",
+      description: "Daily, 4-hour, and 1-hour trends must align before a signal is trusted.",
+    },
+    {
+      icon: "Compass",
+      title: "Market Regime Detection",
+      description: "Identifies trending vs. ranging conditions before evaluating any setup.",
+    },
+    {
+      icon: "MessageSquareWarning",
+      title: "Transparent Signal Reasoning",
+      description: "Every No Trade or Wait status comes with a plain-English explanation.",
+    },
+    {
+      icon: "Wallet",
+      title: "Live Position Tracking",
+      description: "Open positions tracked in real time from entry to current price.",
+    },
+    {
+      icon: "Newspaper",
+      title: "News-Aware Trading",
+      description: "Signals are held back around high-impact news to avoid unstable conditions.",
+    },
+    {
+      icon: "Clock",
+      title: "Multi-Timeframe Charting",
+      description: "Switch between 15m, 30m, and 1h views on any monitored pair.",
+    },
+    {
+      icon: "ListChecks",
+      title: "Active Signal Queue",
+      description: "A live queue of setups forming and waiting for full confluence.",
+    },
+  ] satisfies ProductFeature[],
+};
+
+export const products = [inventra, fraudShield, forexAI];
 
 export const skills = [
   { name: "Next.js", category: "Frontend" },
@@ -270,11 +332,11 @@ export const experienceTimeline = [
       "Shipping production software for real users, learning that the hardest part of engineering is rarely the code — it's the tradeoffs around it.",
   },
   {
-    phase: "Royal Inventra",
+    phase: "Inventra",
     title: "Founding a SaaS platform",
     period: "Product",
     description:
-      "Designed and built a complete business operations platform from the ground up — architecture, product, and every pixel in between.",
+      "Designed and built a complete retail operations platform from the ground up — architecture, product, and every pixel in between.",
   },
   {
     phase: "FraudShield AI",
@@ -282,6 +344,13 @@ export const experienceTimeline = [
     period: "Security & AI",
     description:
       "Built an AI-driven fraud and risk intelligence platform, merging security engineering with applied machine learning.",
+  },
+  {
+    phase: "Forex-AI",
+    title: "AI-driven market intelligence",
+    period: "Trading & AI",
+    description:
+      "Built a multi-timeframe AI trading co-pilot for global markets, shipped on both web and mobile.",
   },
   {
     phase: "Future Vision",

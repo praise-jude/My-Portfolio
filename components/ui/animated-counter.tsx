@@ -8,12 +8,14 @@ type AnimatedCounterProps = {
   suffix?: string;
   className?: string;
   duration?: number;
+  decimals?: number;
 };
 
 export function AnimatedCounter({
   value,
   suffix = "",
   className,
+  decimals = 0,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
@@ -31,10 +33,14 @@ export function AnimatedCounter({
   useEffect(() => {
     return springValue.on("change", (latest) => {
       if (ref.current) {
-        ref.current.textContent = `${Math.round(latest).toLocaleString("en-US")}${suffix}`;
+        const formatted = latest.toLocaleString("en-US", {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        });
+        ref.current.textContent = `${formatted}${suffix}`;
       }
     });
-  }, [springValue, suffix]);
+  }, [springValue, suffix, decimals]);
 
   return (
     <span ref={ref} className={className}>

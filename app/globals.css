@@ -15,6 +15,8 @@
   --electric-bright: #60a5fa;
   --emerald: #10b981;
   --emerald-bright: #34d399;
+  --amber: #d97706;
+  --amber-bright: #fbbf24;
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -36,6 +38,8 @@
   --color-electric-bright: var(--electric-bright);
   --color-emerald: var(--emerald);
   --color-emerald-bright: var(--emerald-bright);
+  --color-amber: var(--amber);
+  --color-amber-bright: var(--amber-bright);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -171,6 +175,12 @@ body {
   box-shadow:
     0 0 0 1px rgba(16, 185, 129, 0.25),
     0 8px 40px -8px rgba(16, 185, 129, 0.45);
+}
+
+@utility glow-amber {
+  box-shadow:
+    0 0 0 1px rgba(217, 119, 6, 0.25),
+    0 8px 40px -8px rgba(217, 119, 6, 0.45);
 }
 
 @utility focus-ring {

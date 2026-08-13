@@ -3,12 +3,13 @@ import { cn } from "@/lib/utils";
 type BadgeProps = {
   children: React.ReactNode;
   className?: string;
-  accent?: "electric" | "emerald" | "neutral";
+  accent?: "electric" | "emerald" | "amber" | "neutral";
 };
 
 const accentClasses: Record<NonNullable<BadgeProps["accent"]>, string> = {
   electric: "text-electric-bright border-electric/30 bg-electric/10",
   emerald: "text-emerald-bright border-emerald/30 bg-emerald/10",
+  amber: "text-amber-bright border-amber/30 bg-amber/10",
   neutral: "text-muted border-border-subtle bg-white/[0.03]",
 };
 
