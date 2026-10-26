@@ -2,31 +2,45 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { navLinks, site } from "@/lib/data";
+import { navLinks } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string>("");
+  const [activeSection, setActiveSection] = useState<string>("");
   const { scrollY } = useScroll();
+  const pathname = usePathname();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 24);
   });
 
+  // Page links are active by route; homepage section links by scroll position.
+  const active =
+    pathname === "/"
+      ? activeSection
+      : (navLinks.find(
+          (l) => !l.href.includes("#") && (pathname === l.href || pathname.startsWith(`${l.href}/`))
+        )?.href ?? "");
+
   useEffect(() => {
+    if (pathname !== "/") return;
+
     const sections = navLinks
-      .map((l) => document.querySelector(l.href))
+      .filter((l) => l.href.startsWith("/#"))
+      .map((l) => document.getElementById(l.href.slice(2)))
       .filter(Boolean) as Element[];
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActive(`#${entry.target.id}`);
+            setActiveSection(`/#${entry.target.id}`);
           }
         });
       },
@@ -35,7 +49,7 @@ export function Navbar() {
 
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -49,7 +63,7 @@ export function Navbar() {
       <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5">
         <motion.nav
           animate={{
-            width: scrolled ? "min(640px, 92vw)" : "min(880px, 94vw)",
+            width: scrolled ? "min(760px, 92vw)" : "min(920px, 94vw)",
             paddingBlock: scrolled ? "0.55rem" : "0.75rem",
           }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -57,20 +71,22 @@ export function Navbar() {
             "glass flex items-center justify-between rounded-full px-4 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.6)] sm:px-6"
           )}
         >
-          <a
-            href="#top"
+          <Link
+            href="/"
+            aria-label="Jude Omini Ewah — home"
             className="focus-ring shrink-0 rounded-full text-sm font-semibold tracking-tight text-foreground"
           >
-            J<span className="text-electric-bright">.</span>Ewah
-          </a>
+            J<span className="text-gold-bright">.</span>Ewah
+          </Link>
 
           <ul className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
+                  aria-current={active === link.href ? "page" : undefined}
                   className={cn(
-                    "focus-ring relative rounded-full px-3.5 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground",
+                    "focus-ring relative whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-muted transition-colors hover:text-foreground",
                     active === link.href && "text-foreground"
                   )}
                 >
@@ -78,18 +94,18 @@ export function Navbar() {
                   {active === link.href && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute inset-x-2 -bottom-0.5 h-px bg-electric-bright"
+                      className="absolute inset-x-2 -bottom-0.5 h-px bg-gold-bright"
                       transition={{ duration: 0.3, ease: "easeOut" }}
                     />
                   )}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
 
           <div className="hidden shrink-0 md:block">
             <Button asChild variant="secondary" size="sm">
-              <a href={`mailto:${site.email}`}>Let&apos;s talk</a>
+              <Link href="/contact">Let&apos;s talk</Link>
             </Button>
           </div>
 
@@ -115,17 +131,20 @@ export function Navbar() {
             className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-2 bg-background md:hidden"
           >
             {navLinks.map((link, i) => (
-              <motion.a
+              <motion.div
                 key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 * i, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="focus-ring rounded-full px-6 py-4 text-2xl font-medium text-foreground/90 transition-colors hover:text-electric-bright"
               >
-                {link.label}
-              </motion.a>
+                <Link
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="focus-ring block rounded-full px-6 py-4 text-2xl font-medium text-foreground/90 transition-colors hover:text-gold-bright"
+                >
+                  {link.label}
+                </Link>
+              </motion.div>
             ))}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -134,9 +153,9 @@ export function Navbar() {
               className="mt-6"
             >
               <Button variant="primary" size="lg" asChild>
-                <a href={`mailto:${site.email}`} onClick={() => setOpen(false)}>
+                <Link href="/contact" onClick={() => setOpen(false)}>
                   Let&apos;s talk
-                </a>
+                </Link>
               </Button>
             </motion.div>
           </motion.div>

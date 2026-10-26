@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,24 @@ import { cn } from "@/lib/utils";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export function ContactForm() {
+export function ContactForm({ defaultSubject = "" }: { defaultSubject?: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  // When the form became usable; submissions faster than a human could type are rejected server-side.
+  const startedAt = useRef(0);
+  const subjectRef = useRef<HTMLInputElement>(null);
+
+  // Prefill from ?subject= (e.g. "Ask me about Inventra") without making the page dynamic.
+  useEffect(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get("subject");
+    if (fromUrl && subjectRef.current && !subjectRef.current.value) {
+      subjectRef.current.value = fromUrl.slice(0, 200);
+    }
+  }, []);
+
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, [status]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,7 +36,10 @@ export function ContactForm() {
     const payload = {
       name: String(data.get("name") ?? ""),
       email: String(data.get("email") ?? ""),
+      subject: String(data.get("subject") ?? ""),
       message: String(data.get("message") ?? ""),
+      website: String(data.get("website") ?? ""),
+      elapsedMs: Date.now() - startedAt.current,
     };
 
     setStatus("loading");
@@ -33,7 +51,7 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const json = await res.json();
+      const json = await res.json().catch(() => ({}));
 
       if (!res.ok) {
         throw new Error(json?.error ?? "Something went wrong.");
@@ -48,7 +66,7 @@ export function ContactForm() {
   }
 
   const fieldClass =
-    "focus-ring w-full rounded-xl border border-border-subtle bg-white/[0.02] px-4 py-3.5 text-sm text-foreground placeholder:text-muted-dim transition-colors duration-200 focus:border-electric/50";
+    "focus-ring w-full rounded-xl border border-border-subtle bg-white/[0.02] px-4 py-3.5 text-sm text-foreground placeholder:text-muted-dim transition-colors duration-200 focus:border-gold/50";
 
   if (status === "success") {
     return (
@@ -67,7 +85,7 @@ export function ContactForm() {
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="focus-ring mt-2 text-sm font-medium text-electric-bright hover:underline"
+          className="focus-ring mt-2 text-sm font-medium text-gold-bright hover:underline"
         >
           Send another message
         </button>
@@ -76,7 +94,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+    <form onSubmit={handleSubmit} className="relative flex flex-col gap-4" noValidate>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className="text-xs font-medium text-muted">
@@ -110,8 +128,31 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-1.5">
+        <label htmlFor="subject" className="text-xs font-medium text-muted">
+          Subject
+        </label>
+        <input
+          ref={subjectRef}
+          id="subject"
+          name="subject"
+          type="text"
+          required
+          maxLength={200}
+          defaultValue={defaultSubject}
+          placeholder="What is this about?"
+          className={fieldClass}
+        />
+      </div>
+
+      {/* Honeypot: hidden from people and assistive tech, often filled by bots. */}
+      <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label htmlFor="website">Leave this field empty</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
         <label htmlFor="message" className="text-xs font-medium text-muted">
-          Project details
+          Message
         </label>
         <textarea
           id="message"

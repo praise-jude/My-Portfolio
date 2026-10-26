@@ -21,7 +21,7 @@ export function Philosophy() {
           {philosophy.map((item) => (
             <StaggerItem key={item.title}>
               <GlassCard className="h-full">
-                <div className="mb-4 inline-flex size-10 items-center justify-center rounded-xl bg-white/[0.04] text-electric-bright">
+                <div className="mb-4 inline-flex size-10 items-center justify-center rounded-xl bg-white/[0.04] text-gold-bright">
                   <DynamicIcon name={item.icon} size={18} />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground">

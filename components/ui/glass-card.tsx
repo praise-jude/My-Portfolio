@@ -36,7 +36,7 @@ export function GlassCard({ children, className, glow = true, as = "div" }: Glas
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(59,130,246,0.12), transparent 70%)",
+              "radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(201,162,74,0.10), transparent 70%)",
           }}
         />
       )}

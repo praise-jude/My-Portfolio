@@ -38,8 +38,8 @@ export function HeroBackground() {
       />
 
       {/* soft color blobs for depth */}
-      <div className="absolute left-[8%] top-[12%] h-[26rem] w-[26rem] animate-pulse-slow rounded-full bg-electric/20 blur-[120px]" />
-      <div className="absolute right-[6%] top-[30%] h-[22rem] w-[22rem] animate-float rounded-full bg-emerald/15 blur-[130px]" />
+      <div className="absolute left-[8%] top-[12%] h-[26rem] w-[26rem] animate-pulse-slow rounded-full bg-gold/15 blur-[120px]" />
+      <div className="absolute right-[6%] top-[30%] h-[22rem] w-[22rem] animate-float rounded-full bg-electric/15 blur-[130px]" />
       <div className="absolute bottom-[-10%] left-1/3 h-[20rem] w-[20rem] rounded-full bg-electric/10 blur-[140px]" />
 
       <ParticleField />

@@ -1,19 +1,20 @@
-import type { ComponentType } from "react";
-import { Mail } from "lucide-react";
+import { MapPin, Mail } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { CopyEmail } from "@/components/ui/copy-email";
 import { ContactForm } from "@/components/sections/contact-form";
-import { GithubIcon, LinkedinIcon, XIcon } from "@/components/ui/social-icons";
-import { site, socials } from "@/lib/data";
+import { SocialLinks } from "@/components/ui/social-links";
+import type { SiteContent } from "@/lib/content/queries";
 
-const socialIcon: Record<string, ComponentType<{ className?: string }>> = {
-  github: GithubIcon,
-  linkedin: LinkedinIcon,
-  x: XIcon,
-  mail: Mail,
+type ContactProps = {
+  content: SiteContent;
+  defaultSubject?: string;
+  headingLevel?: "h1" | "h2";
 };
 
-export function Contact() {
+export function Contact({ content, defaultSubject, headingLevel = "h2" }: ContactProps) {
+  const Heading = headingLevel;
+  const { email, location, availability } = content.contact.fields;
+
   return (
     <section id="contact" className="relative py-28 sm:py-36">
       <div className="container-edge">
@@ -25,47 +26,40 @@ export function Contact() {
               </span>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+              <Heading className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
                 Let&apos;s build something
-                <span className="text-gradient-accent"> worth shipping.</span>
-              </h2>
+                <span className="text-gradient-gold"> worth shipping.</span>
+              </Heading>
             </Reveal>
             <Reveal delay={0.12}>
               <p className="max-w-md text-pretty text-lg leading-relaxed text-muted">
-                Have a product, platform, or business problem that needs real
-                engineering? I&apos;m always open to a conversation.
+                {availability ||
+                  "Have a product, platform, or business problem that needs real engineering? I'm always open to a conversation."}
               </p>
             </Reveal>
 
             <Reveal delay={0.18} className="mt-4 flex flex-col gap-5">
               <div className="flex items-center gap-2 text-foreground/90">
-                <Mail size={16} className="text-electric-bright" />
-                <CopyEmail email={site.email} />
+                <Mail size={16} className="text-gold-bright" />
+                <CopyEmail email={email} />
               </div>
+              {location ? (
+                <div className="flex items-center gap-2 text-sm text-muted">
+                  <MapPin size={16} className="text-gold-bright" />
+                  {location}
+                </div>
+              ) : null}
 
-              <div className="flex items-center gap-3">
-                {socials.map((s) => {
-                  const Icon = socialIcon[s.key];
-                  return (
-                    <a
-                      key={s.key}
-                      href={s.href}
-                      target={s.key === "mail" ? undefined : "_blank"}
-                      rel={s.key === "mail" ? undefined : "noopener noreferrer"}
-                      aria-label={s.label}
-                      className="focus-ring glass flex size-10 items-center justify-center rounded-full text-muted transition-colors hover:text-electric-bright"
-                    >
-                      <Icon className="size-4" />
-                    </a>
-                  );
-                })}
-              </div>
+              <SocialLinks
+                links={content.socials.items.map((s) => ({ label: s.label, url: s.url }))}
+                itemClassName="glass"
+              />
             </Reveal>
           </div>
 
           <Reveal delay={0.1}>
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <ContactForm />
+              <ContactForm defaultSubject={defaultSubject} />
             </div>
           </Reveal>
         </div>

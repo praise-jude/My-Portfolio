@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
-import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/ui/reveal";
 import { DynamicIcon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
+import { StatusBadge } from "@/components/projects/status-badge";
 import type { inventra, fraudShield, forexAI } from "@/lib/data";
+import type { Project as ManagedProject } from "@/lib/projects/types";
 
 type Product = typeof inventra | typeof fraudShield | typeof forexAI;
 
@@ -13,6 +16,8 @@ type ProductSectionProps = {
   product: Product;
   mockup: ReactNode;
   reverse?: boolean;
+  /** Admin-managed record; its text and links take precedence over the built-in copy. */
+  managed?: ManagedProject;
 };
 
 const accentText: Record<Product["accent"], string> = {
@@ -27,7 +32,11 @@ const accentBorder: Record<Product["accent"], string> = {
   amber: "hover:border-amber/40",
 };
 
-export function ProductSection({ product, mockup, reverse }: ProductSectionProps) {
+export function ProductSection({ product, mockup, reverse, managed }: ProductSectionProps) {
+  const name = managed?.name ?? product.name;
+  const tagline = managed?.tagline ?? product.tagline;
+  const description = managed?.description || product.description;
+
   return (
     <div className="relative py-10">
       <div
@@ -38,16 +47,19 @@ export function ProductSection({ product, mockup, reverse }: ProductSectionProps
       >
         <div className="flex flex-col gap-6">
           <Reveal>
-            <Badge accent={product.accent}>{product.tagline}</Badge>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge accent={product.accent}>{tagline}</Badge>
+              {managed ? <StatusBadge status={managed.status} /> : null}
+            </div>
           </Reveal>
           <Reveal delay={0.05}>
             <h3 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-              {product.name}
+              {name}
             </h3>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="max-w-lg text-pretty leading-relaxed text-muted">
-              {product.description}
+              {description}
             </p>
           </Reveal>
 
@@ -98,18 +110,39 @@ export function ProductSection({ product, mockup, reverse }: ProductSectionProps
           </StaggerGroup>
 
           <Reveal delay={0.1}>
-            <a
-              href="#contact"
-              className={cn(
-                "focus-ring group mt-2 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-foreground/90 transition-colors hover:text-foreground"
-              )}
-            >
-              Discuss a project like this
-              <ArrowUpRight
-                size={15}
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </a>
+            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-3">
+              {managed ? (
+                <Link
+                  href={`/projects/${managed.slug}`}
+                  className="focus-ring group inline-flex w-fit items-center gap-1.5 text-sm font-medium text-gold-bright"
+                >
+                  Project details
+                  <ArrowUpRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              ) : null}
+              {managed?.website_url ? (
+                <a
+                  href={managed.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="focus-ring inline-flex w-fit items-center gap-1.5 text-sm font-medium text-foreground/90 transition-colors hover:text-foreground"
+                >
+                  Visit website
+                  <ExternalLink size={14} />
+                </a>
+              ) : null}
+              <Link
+                href="/contact"
+                className={cn(
+                  "focus-ring group inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-foreground"
+                )}
+              >
+                Discuss a project like this
+              </Link>
+            </div>
           </Reveal>
         </div>
 

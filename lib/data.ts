@@ -1,6 +1,6 @@
 export const site = {
   name: "Jude Omini Ewah",
-  title: "Founder & Software Engineer",
+  title: "Entrepreneur & Digital Product Builder",
   statement:
     "I build intelligent software that solves real-world business and security challenges.",
   email: "royalmandigitalconcept@gmail.com",
@@ -9,18 +9,18 @@ export const site = {
 };
 
 export const socials = [
-  { label: "GitHub", href: "https://github.com/judeominiewah", key: "github" },
+  { label: "GitHub", href: "https://github.com/praise-jude", key: "github" },
   { label: "LinkedIn", href: "https://linkedin.com/in/judeominiewah", key: "linkedin" },
   { label: "X", href: "https://x.com/judeominiewah", key: "x" },
   { label: "Email", href: `mailto:${site.email}`, key: "mail" },
 ] as const;
 
 export const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
-  { label: "Expertise", href: "#expertise" },
-  { label: "Journey", href: "#journey" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/about" },
+  { label: "Projects", href: "/projects" },
+  { label: "Journey", href: "/#journey" },
+  { label: "Work With Me", href: "/#work-with-me" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const aboutTimeline = [
@@ -65,9 +65,9 @@ export const inventra = {
     "Inventory that runs itself. Real-time stock, supplier orders, and profit analytics for modern retail — in one calm, fast workspace.",
   accent: "electric" as const,
   metrics: [
-    { label: "Uptime", value: "99.98%" },
-    { label: "Stores", value: "12k+" },
-    { label: "Inventory tracked", value: "$2.4B" },
+    { label: "Feature modules", value: "11" },
+    { label: "Platforms", value: "Desktop + Mobile" },
+    { label: "Sync", value: "Cloud" },
   ],
   features: [
     {
@@ -136,10 +136,9 @@ export const fraudShield = {
     "A real-time fraud intelligence layer that scores risk, verifies identity, and protects digital businesses at the speed of a transaction.",
   accent: "amber" as const,
   metrics: [
-    { label: "Transactions (24h)", value: "60" },
-    { label: "Marked safe", value: "27%" },
-    { label: "Auto-blocked", value: "12" },
-    { label: "Fraud prevented", value: "$14,739" },
+    { label: "Feature modules", value: "10" },
+    { label: "Risk scoring", value: "Real-time" },
+    { label: "Controls", value: "Rules engine" },
   ],
   features: [
     {

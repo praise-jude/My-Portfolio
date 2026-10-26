@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { ScrollProgress } from "@/components/effects/scroll-progress";
 import { site } from "@/lib/data";
+import { getContent } from "@/lib/content/queries";
+import { parseList } from "@/lib/validation";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,75 +17,54 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} — ${site.title}`,
-    template: `%s — ${site.name}`,
-  },
-  description: site.statement,
-  keywords: [
-    "Jude Omini Ewah",
-    "Software Engineer",
-    "Founder",
-    "Full Stack Developer",
-    "Inventra",
-    "FraudShield AI",
-    "Forex-AI",
-    "SaaS Developer",
-    "AI Software Engineer",
-  ],
-  authors: [{ name: site.name, url: site.url }],
-  creator: site.name,
-  applicationName: site.name,
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
-  alternates: {
-    canonical: site.url,
-  },
-  openGraph: {
-    type: "website",
-    url: site.url,
-    siteName: site.name,
-    title: `${site.name} — ${site.title}`,
-    description: site.statement,
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} — ${site.title}`,
-    description: site.statement,
-  },
-  icons: {
-    icon: "/favicon.ico",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getContent();
+  const title = seo.fields.title;
+  const description = seo.fields.description;
+
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: title,
+      template: `%s — ${site.name}`,
+    },
+    description,
+    keywords: parseList(seo.fields.keywords ?? "", 30, 60),
+    authors: [{ name: site.name, url: site.url }],
+    creator: site.name,
+    applicationName: site.name,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true },
+    },
+    alternates: {
+      canonical: "/",
+    },
+    openGraph: {
+      type: "website",
+      url: site.url,
+      siteName: site.name,
+      title,
+      description,
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+    icons: {
+      icon: "/favicon.ico",
+    },
+  };
+}
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#060b17",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: site.name,
-  jobTitle: site.title,
-  url: site.url,
-  email: `mailto:${site.email}`,
-  description: site.statement,
-  knowsAbout: [
-    "Software Engineering",
-    "Full Stack Development",
-    "Artificial Intelligence",
-    "Fraud Detection",
-    "SaaS Product Development",
-  ],
 };
 
 export default function RootLayout({
@@ -100,22 +78,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background font-sans text-foreground">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <a
-          href="#main-content"
-          className="glass focus-ring fixed left-4 top-4 z-[100] -translate-y-24 rounded-full px-4 py-2 text-sm font-medium text-foreground transition-transform duration-200 focus:translate-y-0"
-        >
-          Skip to content
-        </a>
-        <ScrollProgress />
-        <Navbar />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

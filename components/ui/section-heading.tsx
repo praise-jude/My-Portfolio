@@ -6,11 +6,12 @@ type SectionHeadingProps = {
   title: string;
   description?: string;
   align?: "left" | "center";
-  accent?: "electric" | "emerald" | "neutral";
+  accent?: "gold" | "electric" | "emerald" | "neutral";
   className?: string;
 };
 
 const accentDot: Record<NonNullable<SectionHeadingProps["accent"]>, string> = {
+  gold: "bg-gold-bright shadow-[0_0_12px_2px_rgba(232,200,114,0.6)]",
   electric: "bg-electric-bright shadow-[0_0_12px_2px_rgba(96,165,250,0.7)]",
   emerald: "bg-emerald-bright shadow-[0_0_12px_2px_rgba(52,211,153,0.7)]",
   neutral: "bg-muted",
@@ -21,7 +22,7 @@ export function SectionHeading({
   title,
   description,
   align = "left",
-  accent = "electric",
+  accent = "gold",
   className,
 }: SectionHeadingProps) {
   return (

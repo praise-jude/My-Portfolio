@@ -24,7 +24,7 @@ export function JourneyLine({ children }: { children: ReactNode }) {
       <motion.div
         aria-hidden
         style={{ scaleY }}
-        className="absolute left-[15px] top-1 hidden h-full w-px origin-top bg-gradient-to-b from-electric-bright via-emerald-bright to-electric-bright sm:block"
+        className="absolute left-[15px] top-1 hidden h-full w-px origin-top bg-gradient-to-b from-gold-bright via-gold/60 to-transparent sm:block"
       />
       {children}
     </div>

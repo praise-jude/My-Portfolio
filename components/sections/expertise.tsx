@@ -1,14 +1,16 @@
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/ui/reveal";
 import { SkillTile } from "@/components/ui/skill-tile";
-import { skills } from "@/lib/data";
+type Skill = { name: string; category: string };
 
-export function Expertise() {
+export function Expertise({ skills }: { skills: Skill[] }) {
+  if (!skills.length) return null;
+
   return (
     <section id="expertise" className="relative py-28 sm:py-36">
       <div className="container-edge">
         <SectionHeading
-          eyebrow="Technical Expertise"
+          eyebrow="Skills & Focus"
           title="A technology ecosystem, not a list of logos"
           description="The tools I reach for depend on the problem — here's the ecosystem I build with most, spanning product, data, and infrastructure."
         />
